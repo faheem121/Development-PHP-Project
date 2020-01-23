@@ -42,7 +42,7 @@
                      <div class="col-md-12">
                         <ul class="breadcrumb-link">
                            <li><a href="index.php">Home</a></li>
-                           <li>About Us</li>
+                           <li>About About Us</li>
                         </ul>
                      </div>
                   </div>
