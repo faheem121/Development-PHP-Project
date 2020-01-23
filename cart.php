@@ -71,8 +71,16 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                    
-                                       <tr>
+                                    <?php  
+
+                                 if (isset($_POST['update_cart'])) {
+                                    $qty=$_POST['qty'];
+                                    $id_cart=$_POST['cart_id'];
+
+                                    $update_qty="update cart set cart_qty='$qty' where cart_id='$id_cart'";
+                                     $update_con= mysqli_query($con,$update_qty);
+                                    ?>
+                                    <tr>
                                           <?php  
 
                                     $total=0;
@@ -122,11 +130,78 @@
                                                 <span data-value="-" class="qty-btn qtyminus-btn"></span>
                                                 <span data-value="+" class="qty-btn qtyplus-btn"></span>               
                                              </div>
+                                             <input type="hidden" name="cart_id" value="<?= $cart_data['cart_id'] ?>">
                                           </td>
                                           <td class="product-total"><span><?= "$".$cart_mul?></span></td>
                                           <td class="product-remove"><a href="delete_cart.php?cart_id=<?= $cart_id  ?>">Remove</a></td>
                                        </tr>
                                         <?php } ?>
+                                    <?php 
+
+                                    
+                                 }else{
+?>
+<tr>
+                                          <?php  
+
+                                    $total=0;
+                                    $i=0;
+                                     $cart_total="select * from cart";
+                                     $total_conect=mysqli_query($con,$cart_total);
+                                  while ($cart_data=mysqli_fetch_array($total_conect)) {
+
+                                  $cart_qty = $cart_data['cart_qty'];
+                                  $cart_id = $cart_data['cart_id'];
+
+                                  $cart_pro_id =$cart_data['pro_id'];
+                                  $cart_color=$cart_data['cart_color'];
+                                  $cart_size=$cart_data['cart_size'];
+
+
+                                 $cart_product= "select * from products where product_id='$cart_pro_id'";
+                                 $cart_pro=mysqli_query($con,$cart_product);
+                                  $product_data=mysqli_fetch_array($cart_pro);
+                                 $product_title=$product_data['product_title'];
+                               $product_image=$product_data['img1'];
+                               $product_price1=$product_data['product_price'];
+                             
+                               $product_price= array($product_data['product_price']);
+                              $values=array_sum($product_price);
+                              $cart_mul=$values * $cart_qty;
+
+                              $total +=$cart_mul;
+
+                              $i++;
+
+                                    ?>
+                                          <td class="product-thumbnail">
+                                             <a href="product_detail.php"><img src="admin/upload_images/<?= $product_image?>" style="width: 70px;height: 95px;" alt="" /></a>
+                                          </td>
+                                          <td class="product-name">
+                                             <a href="product_detail.html"><?= $product_title?></a>
+                                          </td>
+                                          <td class="product-description">color : <?=$cart_color?> <br>  Size : <?=$cart_size?></td>
+                                          <td class="product-price">
+                                             <span><?= "$".$product_price1?></span>
+                                          </td>
+                                      
+                                          <td class="product-qty">
+                                             <div class="product-qty-block">
+                                                <input class="qty input-lg" step="1" min="1" max="20" name="qty" value="<?= $cart_qty ?>" title="Quantity" type="number" />
+                                                <span data-value="-" class="qty-btn qtyminus-btn"></span>
+                                                <span data-value="+" class="qty-btn qtyplus-btn"></span>               
+                                             </div>
+                                             <input type="hidden" name="cart_id" value="<?= $cart_data['cart_id'] ?>">
+                                          </td>
+                                          <td class="product-total"><span><?= "$".$cart_mul?></span></td>
+                                          <td class="product-remove"><a href="delete_cart.php?cart_id=<?= $cart_id  ?>">Remove</a></td>
+                                       </tr>
+                                        <?php } ?>
+                                        <?php
+                                 }
+
+                                 ?>
+                                       
                                     </tbody>
                                  </table>
 
@@ -145,19 +220,7 @@
                               </div>
                               <!-- cart actions -->
                            </form>
-                           <?php  
 
-                                 if (isset($_POST['update_cart'])) {
-                                    $qty=$_POST['qty'];
-                                    $id_cart=$_POST['$cart_id'];
-
-                                    $update_qty="update cart set cart_qty='$qty' where cart_id='$id_cart'";
-                                     $update_con= mysqli_query($con,$update_qty);
-
-                                    
-                                 }
-
-                                 ?>
                            <!-- cart total -->
                            <div class="cart-totals">
                               <div class="cart-totals-inner">
