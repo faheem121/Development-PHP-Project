@@ -1,0 +1,18 @@
+li {
+list-style-type: none;
+  margin-top: 15px;
+  color: green;
+  font-size: 20PX;
+
+}
+
+
+ul a {
+text-decoration: none;
+
+}
+
+a:hover {
+  text-decoration: underline;
+  font-weight: bolder;
+ }
